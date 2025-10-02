@@ -1,6 +1,6 @@
 # reg2bat - Registration Entries to Batch
 
-A simple CL tool which converts `.reg` to `.bat` to skip the prompt and implement it better into automations (e.g., into a image as `RunOnce` file) and overall more flexibility. I used Python for it, as I need a better understanding of it for school reasons.
+A simple CL tool that converts `.reg` to `.bat` to skip the prompt and implement it better into automations (e.g., into a image as `RunOnce` file) and overall more flexibility. I used Python for it, as I need a better understanding of it for school reasons.
 
 Example output:
 
