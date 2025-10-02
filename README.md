@@ -28,3 +28,5 @@ It supports (handles empty data):
 ```ps
 .\reg2bat.py input.reg output.bat
 ```
+## Requirements
+- [Python 3.x](https://www.python.org/downloads/)
