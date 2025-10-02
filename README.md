@@ -29,4 +29,4 @@ It supports (handles empty data):
 .\reg2bat.py input.reg output.bat
 ```
 ## Requirements
-- [Python 3.x](https://www.python.org/downloads/)
+> [Python 3.x](https://www.python.org/downloads/)
