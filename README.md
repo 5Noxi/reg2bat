@@ -6,7 +6,7 @@ Example output:
 
 ![](https://github.com/5Noxi/reg2bat/blob/main/images/reg2bat.png)
 
-`reg2bat` converts the whole exported computer registration entry file (`280 MB (294,215,422 bytes)`) within `3.88` seconds (remove the comments from the time module and start/end line to test it yourself). It replaces all roots with their shorted version:
+`reg2bat` converts the whole exported computer registration entry file (`280 MB (294,215,422 bytes)`) within `3.88` seconds (output removed) - remove the comments from the time module and start/end line to test it yourself. It replaces all roots with their shorted version:
 ```py
 roots = {
     "HKEY_LOCAL_MACHINE": "HKLM",
