@@ -4,8 +4,9 @@ A simple CL tool that converts `.reg` to `.bat` to skip the prompt and implement
 
 Example output:
 
-![](https://github.com/5Noxi/reg2bat/blob/main/images/reg2bat.png)
+![](https://github.com/5Noxi/reg2bat/blob/main/images/reg2bat.png)  
 
+## Features
 `reg2bat` converts the whole exported computer registration entry file (`280 MB (294,215,422 bytes)`) within `3.88` seconds (output removed) - remove the comments from the time module and start/end line to test it yourself. It replaces all root keys with their shorted version:
 ```py
 roots = {
@@ -18,8 +19,8 @@ roots = {
     #"HKEY_PERFORMANCE_DATA": "HKPD" #WNT
 }
 ```
-> [wikipedia | Root keys](https://en.wikipedia.org/wiki/Windows_Registry#Root_keys)
-> [winreg | nf-winreg-regquerymultiplevaluesa](https://learn.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regquerymultiplevaluesa)
+> [wikipedia | Root keys](https://en.wikipedia.org/wiki/Windows_Registry#Root_keys)  
+> [winreg | nf-winreg-regquerymultiplevaluesa](https://learn.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regquerymultiplevaluesa)  
 
 It supports:
 - `REG_NONE` - No defined type
@@ -34,12 +35,12 @@ It supports:
 - `REG_FULL_RESOURCE_DESCRIPTOR` - Hardware resource descriptor
 - `REG_RESOURCE_REQUIREMENTS_LIST` - Hardware resource requirements list
 - `REG_QWORD` / `REG_QWORD_LITTLE_ENDIAN` - 64-bit integer
-> [sysinfo | registry-value-types](https://learn.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types)
-> [wikipedia | Keys and values](https://en.wikipedia.org/wiki/Windows_Registry#Keys_and_values)
+> [sysinfo | registry-value-types](https://learn.microsoft.com/en-us/windows/win32/sysinfo/registry-value-types)  
+> [wikipedia | Keys and values](https://en.wikipedia.org/wiki/Windows_Registry#Keys_and_values)  
 
 ## Usage
 ```ps
 .\reg2bat.py input.reg output.bat
 ```
 ## Requirements
-> [Python 3.x](https://www.python.org/downloads/)
+> [Python 3.x](https://www.python.org/downloads/)  
