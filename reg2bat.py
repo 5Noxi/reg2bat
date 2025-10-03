@@ -1,14 +1,17 @@
 # reg2bat - Registration Entries to Batch
-# Copyright (C) 2025 Noverse - https://discord.gg/E2ybG4j9jU
+# Copyright (C) 2025 Noverse
 
 import sys
 #import time
 
 roots = {
-    "HKEY_LOCAL_MACHINE": "HKLM",
-    "HKEY_CURRENT_USER": "HKCU",
     "HKEY_CLASSES_ROOT": "HKCR",
-    "HKEY_USERS": "HKU",
+    "HKEY_CURRENT_CONFIG": "HKCC",
+    "HKEY_CURRENT_USER": "HKCU",
+    "HKEY_DYN_DATA": "HKDD",  #used in W95, W98, WME
+    "HKEY_LOCAL_MACHINE": "HKLM",
+    "HKEY_USERS": "HKU"
+    #"HKEY_PERFORMANCE_DATA": "HKPD", #not stored in any hive
 }
 
 #start = time.time()
@@ -41,7 +44,7 @@ def reg2bat(src, dst):
             buf = line
         else:
             merged.append(line)
-    #if buf: merged.append(buf.replace("\\", "")) #possible leftovers
+        #if buf: merged.append(buf.replace("\\", "")) #possible leftovers
 
     with open(dst, "w", encoding="utf-8") as f:
         f.write("@echo off\n\n")
@@ -62,39 +65,55 @@ def reg2bat(src, dst):
             else:
                 name = f"/v {dispname}"
 
-            #empty values and type handling
-            if value == '""':  
+            #default
+            out, t, d = None, "REG_SZ", ""
+
+            #handle all types
+            if value == '""':
                 out, t, d = '/t REG_SZ /d ""', "REG_SZ", ""
-            elif value == "hex:":
-                out, t, d = '/t REG_BINARY /d ""', "REG_BINARY", ""
-            elif value == "hex(2):":
-                out, t, d = '/t REG_EXPAND_SZ /d ""', "REG_EXPAND_SZ", ""
-            elif value == "hex(7):":
-                out, t, d = '/t REG_MULTI_SZ /d ""', "REG_MULTI_SZ", ""
-            elif value == "hex(b):":
-                out, t, d = '/t REG_QWORD /d ""', "REG_QWORD", ""
             elif value.startswith("dword:"):
-                d = str(int(value[6:],16))
+                d = str(int(value[6:], 16))
                 out, t = f"/t REG_DWORD /d {d}", "REG_DWORD"
             elif value.startswith("hex(b):"):
-                d = "0x" + value[7:].replace(",","")
+                d = "0x" + value[7:].replace(",", "")
                 out, t = f"/t REG_QWORD /d {d}", "REG_QWORD"
-            elif value.startswith("hex(7):"):
-                d = value[7:].replace(",","")
-                out, t = f'/t REG_MULTI_SZ /d "{d}"', "REG_MULTI_SZ"
             elif value.startswith("hex(2):"):
-                d = value[7:].replace(",","")
+                d = value[7:].replace(",", "")
                 out, t = f"/t REG_EXPAND_SZ /d {d}", "REG_EXPAND_SZ"
+            elif value.startswith("hex(7):"):
+                d = value[7:].replace(",", "")
+                out, t = f'/t REG_MULTI_SZ /d "{d}"', "REG_MULTI_SZ"
             elif value.startswith("hex:"):
-                d = value[4:].replace(",","")
+                d = value[4:].replace(",", "")
                 out, t = f"/t REG_BINARY /d {d}", "REG_BINARY"
+
+            #rarely used
+            elif value.startswith("hex(0):"):
+                d = value[7:].replace(",", "")
+                out, t = f"/t REG_NONE /d {d}", "REG_NONE"
+            elif value.startswith("hex(5):"):
+                d = value[7:].replace(",", "")
+                out, t = f"/t REG_DWORD_BIG_ENDIAN /d {d}", "REG_DWORD_BIG_ENDIAN"
+            elif value.startswith("hex(6):"):
+                d = value[7:].replace(",", "")
+                out, t = f"/t REG_LINK /d {d}", "REG_LINK"
+            elif value.startswith("hex(8):"):
+                d = value[7:].replace(",", "")
+                out, t = f"/t REG_RESOURCE_LIST /d {d}", "REG_RESOURCE_LIST"
+            elif value.startswith("hex(9):"):
+                d = value[7:].replace(",", "")
+                out, t = f"/t REG_FULL_RESOURCE_DESCRIPTOR /d {d}", "REG_FULL_RESOURCE_DESCRIPTOR"
+            elif value.startswith("hex(a):"):
+                d = value[7:].replace(",", "")
+                out, t = f"/t REG_RESOURCE_REQUIREMENTS_LIST /d {d}", "REG_RESOURCE_REQUIREMENTS_LIST"
+
             else:
                 d = value.strip('"')
                 out, t = f'/t REG_SZ /d "{d}"', "REG_SZ"
 
             f.write(f'reg add "{key}" {name} {out} /f\n')
-            #f.write("\nexit /b 0\n")
             print(f"[+] {dispname} -> {t} {d}")
+        #f.write("\nexit /b 0\n")
         #end = time.time()
         #print(f"{end - start:.2f} seconds")
 
